@@ -1,4 +1,6 @@
 <?php
+require 'config/dbc.php';
+
 if (isset($_GET['testmode'])) { $testmode = $_GET['testmode']; }
 if (isset($_GET['items'])) { $itemsmode = $_GET['items']; }
 if (isset($_GET['cats'])) { $catsmode = $_GET['cats']; }
