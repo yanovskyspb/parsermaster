@@ -1,5 +1,6 @@
 *.log
 *.html
 temp/
+test*.php
 # config/dbc.php
 

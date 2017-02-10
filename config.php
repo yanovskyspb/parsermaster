@@ -11,13 +11,6 @@ if (isset($_GET['cats'])) { $catsmode = $_GET['cats']; }
 	ini_set('memory_limit', '-1');
 	ini_set("max_execution_time", "0");
 
-// ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ
-
-	define('HOST', 'localhost');
-	define('USER', 'root');
-	define('PASSWORD', '');
-	define('NAME_BD', 'parser_master');
-
 	$connect = mysql_connect(HOST, USER, PASSWORD);
 	mysql_select_db(NAME_BD, $connect);
 
