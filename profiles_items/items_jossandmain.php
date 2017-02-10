@@ -57,22 +57,23 @@ use SleepingOwl\Apist\Apist;
 		 'headers' => [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0'
     ],
-			'vendor_id' => Apist::filter('div button.favorite')->attr('data-product-id'),
-			'title' => Apist::filter('div h1.product-name')->text()->trim()->delAll(),
-			'description' => Apist::filter('div div.first-col')->html()->trim()->delLinks()->delAll(),
+			'vendor_id' => Apist::filter('html head')->html()->trim()->delAll()->PregReplace('^(.+?),"sku":"', '')->PregReplace('"(.+?)$', ''),
+			'title' => Apist::filter('div h1')->text()->trim()->delAll(),
+			'description' => Apist::filter('div#information')->html()->trim()->delLinks()->delAll()->PregReplace('<div class="js-product-feedback-div(.+)$', '')->PregReplace(' class="(.+?)"', '')->PregReplace('<h2>(.+?)</h2>', '')->PregReplace('(<div>|</div>)', ''),
 			'description2' => Apist::filter('div div.brand-bio')->html()->trim()->delLinks()->delAll(),
 			'description3' => Apist::filter('div div.actual-description')->html()->trim()->delLinks()->delAll(),
 			//'selectedVariant' => Apist::filter('div.container div.rightSideBarWide div#hzProductInfo.marketplace.mp.hzProduct div div.buyBox div.groupSelectors div.variationSelectors div#mpVariationSelectBox div#variationSelect_c.variationOptions a.variationOption.selected')->text()->trim(),
-			//'brand' => Apist::filter('div.container div.rightSideBarWide div#hzProductInfo.marketplace.mp.hzProduct div div.detailBox div.productSpec dl.hzAttributes.horizontal-list.normal-text dd.value span.productManufacturer')->text()->trim(),
-			'json' => Apist::filter('html head')->html()->delAll()->trim()->PregReplace('^(.+?)OKL\.var', 'OKL.var')->PregReplace(';<\/script>(.+)$', '')->PregReplace('OKL\.vars=', ''),
-			'price' => Apist::filter('html head')->html()->delAll()->trim()->PregReplace('^(.+?)"price":"\$', '')->PregReplace('<\/script>(.+)$', '')->PregReplace('[^0-9\.]', ''),
+			'brand' => Apist::filter('html head')->html()->trim()->delAll()->PregReplace('^(.+?),"brand":"', '')->PregReplace('"(.+?)$', ''),
+			//'json' => Apist::filter('html head')->html()->delAll()->trim()->PregReplace('^(.+?)wf\.extend\({"wf":{"config', 'wf.extend({"wf":{"config')->PregReplace(';<\/script>(.+)$', '')->PregReplace('wf\.extend', ''),
+			'price' => Apist::filter('html body')->html()->trim()->delAll()->PregReplace('^(.+?),"unit_sale_price":', '')->PregReplace(',"(.+?)$', ''),
+			'oldPrice' => Apist::filter('html body')->html()->trim()->delAll()->PregReplace('^(.+?),"regular_price":', '')->PregReplace(',"(.+?)$', ''),
 			//'oldPrice' => Apist::filter('div.container div.rightSideBarWide div#hzProductInfo.marketplace.mp.hzProduct div div.buyBox div.buyContainer div.clearfix div#vlPrices.priceBox div.price2 span.msrp')->text()->trim(),			
 			//'specification' => Apist::filter('div.container div.rightSideBarWide div#hzProductInfo.marketplace.mp.hzProduct div div.detailBox div.productSpec dl.hzAttributes.horizontal-list.normal-text')->html()->delAll()->delLinks()->delAll(),
 			//'variations' => Apist::filter('div.container div.rightSideBarWide div#hzProductInfo.marketplace.mp.hzProduct div div.buyBox div.groupSelectors div.variationSelectors div#mpVariationSelectBox a')->each(Apist::filter('*')->text()),
 			//'categories' => Apist::filter('div.container div.leftSideContentNarrow div.navigationTopicBreadcrumbs div ul.breadcrumb')->text()->delLinks()->delAll()->Replace('All Products / ', ''),
 			//'related' => Apist::filter('div.container div.rightSideBarWide div#relatedSearches.r-sidebar')->text()->Replace('Related Searches:', '')->Replace(' · ', ','),
 			//'keywords' => Apist::filter('div.container div.rightSideBarWide div#keywordsDiv.r-sidebar')->text()->DelSpaces()->Replace(' · ', ', ')->Replace('Keywords ', '')->UpWords(),
-			'mainimg' => Apist::filter('div div img#main-image')->attr('src'),
+			'mainimg' => Apist::filter('a img.ProductDetailImagesBlock-carousel-image')->attr('src'),
 			'imgs' => Apist::filter('div#scrollImage')->text()
 		]);
 	}
@@ -83,6 +84,7 @@ function postProd($parser_result)
 	global $mark1, $mark2, $p_site_id, $p_title, $p_brand, $p_description, $p_description2, $p_price, $p_msrp, $p_main_image;
 	//echo $parser_result['json'];
 	$js = json_decode($parser_result['json'], TRUE);
+	echo $js;
 	$p_site_id = $js['tealiumData']['product_id'];
 	if ( !preg_match("@$parser_result\['title'\]@i", $js['tealiumData']['product_brand']) && $js['tealiumData']['product_brand'] != '') { $p_title = $js['tealiumData']['product_brand'] . ' ' . $parser_result['title']; }
 	else { $p_title = $parser_result['title']; }

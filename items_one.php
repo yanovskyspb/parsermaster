@@ -22,7 +22,7 @@ require 'items_functions.php';
 				include_once('profiles_items/'.$items_profile.'.php');
 				if ($local == 'YES') {
 				$sql2 = "SELECT * FROM $links_table WHERE linktype = '1' AND downloaded = '1' AND parsed = '0' and local_link != '' LIMIT 1";
-				//echo $sql2 . '<br>';
+				echo $sql2 . '<br>';
 				$result2 = mysql_query($sql2) or die(mysql_error());
 				$num_rows = mysql_num_rows($result2);
 					if ($num_rows != 0) {
@@ -30,7 +30,7 @@ require 'items_functions.php';
 						$p_id = $row2['id'];
 						$link = $row2['link'];
 						$p_link = $row2['local_link'];
-						$p_link = 'temp/links_onekingslane/1100003/409216.html';
+						//$p_link = 'temp/links_onekingslane/1100003/409216.html';
 						if (isset($testmode)) { echo $p_link . '<br />'; }
 						
 						$api = new HabrApi;
