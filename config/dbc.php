@@ -5,7 +5,7 @@
 		define('HOST', 'localhost');
 		define('USER', 'root');
 		define('PASSWORD', '');
-		define('NAME_BD', 'parser_master_');
+		define('NAME_BD', 'parser_master');
 	} else {
 		//ТЕСТОВАЯ СРЕДА
 		define('HOST', 'localhost');
