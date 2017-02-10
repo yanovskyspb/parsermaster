@@ -17,8 +17,7 @@ if (isset($_GET['cats'])) { $catsmode = $_GET['cats']; }
 	mysql_query("SET NAMES 'utf8';");
 	mysql_query("SET CHARACTER SET 'utf8';");
 	mysql_query("SET SESSION collation_connection = 'utf8_general_ci';");
-	
-	require 'C:\Users\Parser\vendor\autoload.php';
+
 // ПАРАМЕТРЫ
 
 	$proxy_url = 'http://173.0.156.113/px.php?purl=';
