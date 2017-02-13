@@ -8,7 +8,7 @@ require 'items_functions.php';
 	$result = mysql_query($sql);
 	$sites = mysql_num_rows($result);
 	while ($counter < $sites) {
-	$sql1 = "SELECT * FROM `!sites` WHERE id = 4 AND status = '1' ORDER BY updated ASC LIMIT 1";
+	$sql1 = "SELECT * FROM `!sites` WHERE id = 7 AND status = '1' ORDER BY updated ASC LIMIT 1";
 	//echo $sql1 . '<br>';
     $result1 = mysql_query($sql1) or die(mysql_error());
 	$num_rows = mysql_num_rows($result1);
