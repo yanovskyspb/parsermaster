@@ -8,7 +8,7 @@ require 'items_functions.php';
 	$result = mysql_query($sql);
 	$sites = mysql_num_rows($result);
 	while ($counter < $sites) {
-	$sql1 = "SELECT * FROM `!sites` WHERE id = 4 AND status = '1' ORDER BY updated ASC LIMIT 1";
+	$sql1 = "SELECT * FROM `!sites` WHERE id in (4,7) AND status = '1' ORDER BY updated ASC LIMIT 1";
 	//echo $sql1 . '<br>';
     $result1 = mysql_query($sql1) or die(mysql_error());
 	$num_rows = mysql_num_rows($result1);
@@ -22,10 +22,10 @@ require 'items_functions.php';
 				include_once('profiles_items/'.$items_profile.'.php');
 				if ($local == 'YES') {
 				$sql2 = "SELECT * FROM $links_table WHERE linktype = '1' AND downloaded = '1' AND parsed = '0' and local_link != '' LIMIT 5";
-				//echo $sql2 . '<br>';
+				echo $sql2 . '<br>';
 				$result2 = mysql_query($sql2) or die(mysql_error());
-				$num_rows = mysql_num_rows($result2);
-					if ($num_rows != 0) {
+				$num_rows2 = mysql_num_rows($result2);
+					if ($num_rows2 != 0) {
 						while ($row2 = mysql_fetch_assoc($result2)) {
 						$p_id = $row2['id'];
 						$link = $row2['link'];
@@ -54,9 +54,10 @@ require 'items_functions.php';
 						$p_price = addslashes($p_price);
 						$p_msrp = addslashes($p_msrp);
 						$p_main_image = addslashes($p_main_image);
+						$p_images = addslashes($p_images);
 						//echo $mark1 . '<br />';
 						if ($mark1 != '' && $mark2 != '') {
-							$sql_insert = "INSERT INTO $items_profile VALUES ('','$p_site_id','$p_id','$link','$p_link','$p_title','$p_brand','$p_description','$p_description2','','$p_price','$p_msrp','$p_main_image','','',now(),now())";
+							$sql_insert = "INSERT INTO $items_profile VALUES ('','$p_site_id','$p_id','$link','$p_link','$p_title','$p_brand','$p_description','$p_description2','','$p_price','$p_msrp','$p_main_image','','$p_images',now(),now())";
 							//echo $sql_insert . '<br>';
 							//file_put_contents('insert-log.txt',$p_link . ' - ' . $link . PHP_EOL,FILE_APPEND);
 							$result = mysql_query($sql_insert);

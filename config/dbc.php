@@ -8,6 +8,7 @@
 		define('NAME_BD', 'parser_master');
 		
 		require 'C:\Users\Parser\vendor\autoload.php';
+		$environment = '';
 
 	} else {
 		//ТЕСТОВАЯ СРЕДА
@@ -17,6 +18,7 @@
 		define('NAME_BD', 'parser_master_tests');
 		
 		require 'C:\Users\dm.ian\vendor\autoload.php';
+		$environment = 'local';
 
 	}
 ?>

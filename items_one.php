@@ -8,7 +8,7 @@ require 'items_functions.php';
 	$result = mysql_query($sql);
 	$sites = mysql_num_rows($result);
 	while ($counter < $sites) {
-	$sql1 = "SELECT * FROM `!sites` WHERE id = 4 AND status = '1' ORDER BY updated ASC LIMIT 1";
+	$sql1 = "SELECT * FROM `!sites` WHERE id in (4,7) AND status = '1' ORDER BY updated ASC LIMIT 1";
 	//echo $sql1 . '<br>';
     $result1 = mysql_query($sql1) or die(mysql_error());
 	$num_rows = mysql_num_rows($result1);
@@ -55,13 +55,13 @@ require 'items_functions.php';
 						$p_price = addslashes($p_price);
 						$p_msrp = addslashes($p_msrp);
 						$p_main_image = addslashes($p_main_image);
-						
-						echo $p_title;
-						echo $p_main_image;
-						echo $mark1 . '<br />';
+						$p_images = addslashes($p_images);
+						//echo $p_title;
+						//echo $p_main_image;
+						//echo $mark1 . '<br />';
 						if ($mark1 != '' && $mark2 != '') {
-							$sql_insert = "INSERT INTO $items_profile VALUES ('','$p_site_id','$p_id','$link','$p_link','$p_title','$p_brand','$p_description','$p_description2','','$p_price','$p_msrp','$p_main_image','','',now(),now())";
-							//echo $sql_insert . '<br>';
+							$sql_insert = "INSERT INTO $items_profile VALUES ('','$p_site_id','$p_id','$link','$p_link','$p_title','$p_brand','$p_description','$p_description2','','$p_price','$p_msrp','$p_main_image','','$p_images',now(),now())";
+							echo $sql_insert . '<br>';
 							//file_put_contents('insert-log.txt',$p_link . ' - ' . $link . PHP_EOL,FILE_APPEND);
 							//$result = mysql_query($sql_insert);
 						
