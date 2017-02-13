@@ -6,10 +6,10 @@ use SleepingOwl\Apist\Apist;
 	{
 	public function getBaseUrl()
 	{
-	$environment = '';
+	global $environment;
 	if ($environment === 'local')
 	{
-	return 'http://habrahabr.my';
+	return 'http://localhost/p_tests/parsermaster/';
 	} else
 	{
 	return 'http://localhost/parsermaster/';
