@@ -13,37 +13,6 @@ use SleepingOwl\Apist\Apist;
 	return 'http://habrahabr.ru';
 	}
 	}
-	public function index()
-	{
-	return $this->get('/', [
-	'title' => Apist::filter('.page_head')->exists()->then(
-	Apist::filter('.page_head .title')->trim()
-	)->else(
-	'Title not found'
-	),
-	'title_updated' => Apist::filter('.page_head .title')->text()->call(function ($title)
-	{
-	return 'Modified Title: ' . $title;
-	}),
-	'posts_list' => Apist::filter('.posts .post')->each(function ($node, $i)
-	{
-	return ($i + 1) . '. ' . $node->filter('.title a')->text();
-	}),
-	'posts' => Apist::filter('.posts .post')->each([
-	'title' => Apist::filter('h1.title a')->text(),
-	'link' => Apist::filter('h1.title a')->attr('href'),
-	'hubs' => Apist::filter('.hubs a')->each(Apist::filter('*')->text()),
-	'views' => Apist::filter('.pageviews')->intval(),
-	'favs_count' => Apist::filter('.favs_count')->intval(),
-	'content' => Apist::filter('.content')->html(),
-	'author' => [
-	'username' => Apist::filter('.author a'),
-	'profile_link' => Apist::filter('.author a')->attr('href'),
-	'rating' => Apist::filter('.author .rating')->text()
-	]
-	]),
-	]);
-	}
 	public function get404()
 	{
 	return $this->get('/unknown-page', 'this-will-be-ignored');
@@ -138,7 +107,7 @@ global $proxy, $proxy_url;
 	//echo $urlstatus . '<br />';
 	if (isset($status301) && $urlstatus == $status301) { $links[] = 'return301'; }
 	if (isset($status404) && $urlstatus == $status404) { $links[] = 'return404'; }
-	
+	//print_r($links);
 	return $links;
 }
 ?>

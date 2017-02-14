@@ -9,7 +9,7 @@ require 'links_functions.php';
 	$sites = mysql_num_rows($result);
 	while ($counter < $sites) {
 	$sql1 = "SELECT * FROM `!sites` where status = '1' ORDER BY updated ASC LIMIT 1";
-	echo $sql1 . '<br>';
+	//echo $sql1 . '<br>';
     $result1 = mysql_query($sql1) or die(mysql_error());
 	$num_rows = mysql_num_rows($result1);
 		if ($num_rows != 0) {
@@ -18,7 +18,7 @@ require 'links_functions.php';
 				$links_table = 'links_'.$row1['siteprefix'];
 				$parser = $row1['parser'];
 				$proxy = $row1['proxy'];
-				echo $proxy;
+				//echo $proxy;
 				$sql = "UPDATE `!sites` SET updated = now() WHERE id = '$siteid'";
 				$result = mysql_query($sql);
 				//echo $links_table;
@@ -26,17 +26,17 @@ require 'links_functions.php';
 				if (!isset($trimurls)) { $trimurls = ''; }
 
 				if (isset($itemsmode)) {
-					$sql1 = "SELECT link FROM $links_table WHERE parsed != '1' and linktype = '1' ORDER BY prior DESC LIMIT 5";
+					$sql1 = "SELECT link FROM $links_table WHERE parsed not in ('1','2') and linktype = '1' ORDER BY prior DESC LIMIT 5";
 					$result1 = mysql_query($sql1) or die(mysql_error());
 					$num_rows = mysql_num_rows($result1);
 				}
 				elseif (isset($catsmode)) {
-					$sql1 = "SELECT link FROM $links_table WHERE parsed != '1' and linktype = '2' ORDER BY prior DESC LIMIT 5";
+					$sql1 = "SELECT link FROM $links_table WHERE parsed not in ('1','2') and linktype = '2' ORDER BY prior DESC LIMIT 5";
 					$result1 = mysql_query($sql1) or die(mysql_error());
 					$num_rows = mysql_num_rows($result1);
 				}
 				else {
-					$sql1 = "SELECT link FROM $links_table WHERE parsed != '1' ORDER BY prior DESC LIMIT 5";
+					$sql1 = "SELECT link FROM $links_table WHERE parsed not in ('1','2') ORDER BY prior DESC LIMIT 5";
 					$result1 = mysql_query($sql1) or die(mysql_error());
 					$num_rows = mysql_num_rows($result1);
 				}
@@ -45,10 +45,17 @@ require 'links_functions.php';
 					$p_link = $row1['link'];
 					if(isset($testmode)) { echo '<hr><strong>' . $p_link . '</strong><br>'; }
 					if ($parser == 'apist') {
+						//echo $p_link . '<br>';
 						$api = new HabrApi;
 						$parser_result = $api->getUrls($p_link);
 						if (isset($parser_result['links']) && $parser_result['links'] != '') {
 							$links = $parser_result['links'];
+						} elseif ($parser_result['error']['status'] == 404 || $parser_result['error']['status'] == 0) {
+						//echo 'ОШИБКА КАКАЯТО<br />';
+						$sql = "UPDATE $links_table SET parsed = '2', timestring = now() WHERE link = '$p_link'";
+						//echo $sql . '<br />';
+						$result = mysql_query($sql);
+						unset($p_link);
 						}
 					}
 					elseif ($parser == 'native') {
